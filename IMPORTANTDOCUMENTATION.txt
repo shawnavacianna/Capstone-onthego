@@ -37,4 +37,4 @@ q to quit
 
 Workflow
 
-vi - > i -> esc -> wq /q/ q!
+vi - > i -> esc -> :wq /q/ q!
