@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Driver Status</title>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>	
+  <script src="//code.jquery.com/yqlgeo.js"></script>
+  <script>
+    
+    jQuery(window).ready(function(){
+    $('input:radio[name="status"]').change(
+    function(){
+        if ($(this).is(':checked') && $(this).val() == 'Available') {
+            alert('You are now available to book another job');
+           // $('#locationmonitor').toggle();
+            Tlocation();
+        }
+        if ($(this).is(':checked') && $(this).val() == 'Unavailable') {
+            alert('You are currently on a job and unavailable.');
+        }
+    });
+    });
+    
+function Tlocation(){
+        jQuery(window).ready(function(){
+            initiate_watchlocation();
+        });
+ 
+        var watchProcess = null;
+ 
+        function initiate_watchlocation() {
+                if (watchProcess == null) {
+                    watchProcess = navigator.geolocation.watchPosition(handle_geolocation_query, handle_errors);
+                }
+        }
+ 
+        function stop_watchlocation() {
+            if (watchProcess != null)
+            {
+              navigator.geolocation.clearWatch(watchProcess);
+              watchProcess = null;
+            }
+        }
+ 
+        function handle_errors(error)
+        {
+            switch(error.code)
+            {
+                case error.PERMISSION_DENIED: alert("user did not share geolocation data");
+                break;
+ 
+                case error.POSITION_UNAVAILABLE: alert("could not detect current position");
+                break;
+ 
+                case error.TIMEOUT: alert("retrieving position timedout");
+                break;
+ 
+                default: alert("unknown error");
+                break;
+            }
+        }
+ 
+    function handle_geolocation_query(position){
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+       // alert('Lat: ' + position.coords.latitude + ' ' + 'Lon: ' + position.coords.longitude);      //Lat: 17.991172 Lon: -76.87005669999999
+        
+        $.ajax({
+            type:'POST',
+            url:"/TaxiStatusTracker.php",
+            data: {lat_info: lat, lon_info:lon},
+            success:function(data){
+                $("#msg").html("Successfully Added Lon & Lat");
+                console.log(data)
+            }
+        });
+    }
+}
+    </script>
+
+</head>
+
+	<body>
+        <form> 
+            <input type="radio" id="available" name="status" value="Available" /> Available
+            <input type="radio" id="unavailable" name="status" value="Unavailable" /> Unavailable
+            <div id="info"></div>
+            <!--
+            <div id="locationmonitor" style="display:none;">
+            <button id="btnInit" >Monitor my location</button>
+            <button id="btnStop" >Stop monitoring</button>
+            </div> !-->
+        </form>
+        <a href ="/.c9/HTML&PHP/driverdashboard.html"><button id="btnInit"> Back </button></a>
+	</body>
+
+</html>

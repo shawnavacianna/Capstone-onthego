@@ -1,0 +1,40 @@
+We need to change the file path for all the folders outside of the HTML&PHP folder.
+
+That is , all filepaths must change to
+
+../../.c9/insert relevant folder names
+
+For the files in the HTML&PHP folder the link format is changed from:
+
+/.c9/css/firstpage.css
+
+to 
+
+.c9/css/firstpage.css
+
+See frontpage.html
+
+
+This is the sample of the file we will use to call our index.html from our 
+<?php
+        include(".c9/HTML&PHP/index.html");
+?>
+
+
+
+commands on server
+
+wq - write quit after insert
+i to insert
+esc to go to command mode
+vi to edit the file
+cd .. - to go back one folder
+q! quit without saving
+cp -R to copy with folders
+cp to copy files
+rm -R for removing directories
+q to quit 
+
+Workflow
+
+vi - > i -> esc -> wq /q/ q!
